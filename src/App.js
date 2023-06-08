@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { Container } from '@chakra-ui/react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import Navbar from './Components/Navbar/Navbar';
+import Detail from './Pages/Detail/Detail';
+import Favourite from './Pages/Favourite/Favourite';
+import Home from './Pages/Home/Home';
+import NotFound from './Pages/NotFound/NotFound';
+
 
 function App() {
+  const location = useLocation()
+  const isNotFoundPage = location.pathname === '*';
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container px='0' maxW='md' m='auto'>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/favourite' element={<Favourite />} />
+        <Route path='/detail/:id' element={<Detail />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+      <Navbar />
+    </Container>
   );
 }
 
