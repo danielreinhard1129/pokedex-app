@@ -4,19 +4,14 @@ import CardRectangle from '../../Components/Cards/CardRectangle'
 import CardSquare from '../../Components/Cards/CardSquare'
 import Loading from '../../Components/Loading/Loading'
 import { useFetchPokemons } from '../../hooks/useFetchPokemons'
-import { useFetchPikachu } from '../../hooks/useFetchPikachu'
+import { useFetchDetailPokemon } from '../../hooks/useFetchDetailPokemon'
 import Toast from '../../Components/Toast/Toast'
 
 
+
 function Home() {
-    const [isLoaded, setIsLoaded] = useState(false)
-    setTimeout(() => {
-        setIsLoaded(true)
-    }, 1500)
-
-    const { data: pokemons, fetchNextPage, isFetching, isError: isErrorPokemons, error: errorPokemons } = useFetchPokemons()
-    const { data: pokemon, isError: isErrorPokemon, error: errorPokemon } = useFetchPikachu()
-
+    const { data: pokemons, fetchNextPage, isFetching, isLoading: isLoadingPokemons, isError: isErrorPokemons, error: errorPokemons } = useFetchPokemons()
+    const { data: pokemon, isLoading: isLoadingPokemon, isError: isErrorPokemon, error: errorPokemon } = useFetchDetailPokemon(25, true)
 
     useEffect(() => {
         const onScroll = async (event) => {
@@ -41,7 +36,7 @@ function Home() {
                     </Heading>
                 </Box>
                 <Box mb='4'>
-                    <Skeleton isLoaded={isLoaded} rounded='xl'>
+                    <Skeleton isLoaded={!isLoadingPokemon} rounded='xl'>
                         <CardRectangle pokemon={pokemon} />
                     </Skeleton>
                 </Box>
@@ -57,7 +52,7 @@ function Home() {
                         {
                             pokemons?.pages?.map((item) => {
                                 return item.pokemons.map((val) => {
-                                    return <Skeleton isLoaded={isLoaded} rounded='xl' key={val.id}>
+                                    return <Skeleton isLoaded={!isLoadingPokemons} rounded='xl' key={val.id}>
                                         <Box>
                                             <CardSquare id={val.id} name={val.name} image={val.sprites?.other.home.front_default} />
                                         </Box>
