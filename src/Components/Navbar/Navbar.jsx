@@ -20,10 +20,6 @@ function Navbar() {
         isValid = false
     }
 
-    console.log(isValid);
-
-
-
     return (
         <Flex pos={'relative'} w='full' justifyContent={'center'} display={isValid ? 'flex' : 'none'} >
             <Flex bgColor={'#0E1F40'} shadow='xl' position='fixed' bottom={'5'} justifyContent='space-evenly' w={{ base: '75%', sm: '350px', md: '350px' }} py='2' rounded={'xl'}>
@@ -34,8 +30,8 @@ function Navbar() {
                     </Flex>
                 </Button>
                 <Button bgColor={'#0E1F40'} py='7' onClick={() => navigate('/favourite')}>
-                    <Flex flexDir={'column'} alignItems='center' position={'relative'}>
-                        <Badge pos={'absoulte'} right='0' >0</Badge>
+                    <Flex flexDir={'column'} alignItems='center'>
+                        <Badge pos={'absoulte'} >0</Badge>
                         <FaBookmark style={{ fontSize: '30px', color: 'white' }} />
                         <Text fontSize={'xs'} color='white'>Favorites</Text>
                     </Flex>
