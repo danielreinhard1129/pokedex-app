@@ -1,12 +1,11 @@
-import { Box, Card, Heading, Image, ButtonGroup, Text, Button, Tag, TagLabel } from '@chakra-ui/react'
-import React from 'react'
-import { AiOutlineHeart } from 'react-icons/ai';
-import { AiFillHeart } from 'react-icons/ai';
-import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
+import { Box, Button, ButtonGroup, Card, Heading, Image, Tag, TagLabel } from '@chakra-ui/react';
+import React from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-import noImage from '../../Assets/noImage.png'
-import { useUpdateFavourite } from '../../hooks/useUpdateFavourite';
+import noImage from '../../Assets/noImage.png';
+import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
 import { checkIsLiked } from '../../helper/checkIsLiked';
+import { useUpdateFavourite } from '../../hooks/useUpdateFavourite';
 import Toast from '../Toast/Toast';
 
 

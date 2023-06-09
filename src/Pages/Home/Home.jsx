@@ -20,7 +20,7 @@ function Home(props) {
             const { scrollHeight, scrollTop, clientHeight } =
                 event.target.scrollingElement;
 
-            if (scrollHeight - scrollTop <= clientHeight) {
+            if (scrollHeight - scrollTop <= clientHeight * 1.5) {
                 await fetchNextPage();
             }
         };
