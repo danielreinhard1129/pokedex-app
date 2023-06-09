@@ -34,6 +34,9 @@ function CardRectangle(props) {
                     h='100px'
                     src={props.pokemon?.sprites?.other?.home?.front_default ? props.pokemon?.sprites?.other?.home?.front_default : noImage}
                     alt='Pokemon'
+                    onClick={() => navigate(`/detail/${props.pokemon?.id}`)}
+                    cursor='pointer'
+                    _hover={{ transform: 'scale(1.1)' }}
                 />
             </Box>
 

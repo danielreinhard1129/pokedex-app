@@ -38,6 +38,9 @@ function CardFavoritos(props) {
                     alt='Pokemon'
                     rounded='lg'
                     mr='6'
+                    onClick={() => navigate(`/detail/${props.id}`)}
+                    cursor='pointer'
+                    _hover={{ transform: 'scale(1.1)' }}
                 />
             </Box>
 

@@ -34,6 +34,7 @@ function CardRectangleWithLine(props) {
                     alt='Pokemon'
                     rounded='lg'
                     mr='6'
+                    _hover={{ transform: 'scale(1.1)' }}
                 />
             </Box>
 

@@ -11,7 +11,7 @@ import { useFetchPokemons } from '../../hooks/useFetchPokemons'
 
 
 function Home(props) {
-    const { data: pokemons, fetchNextPage, isFetching, isLoading: isLoadingPokemons, isError: isErrorPokemons, error: errorPokemons } = useFetchPokemons()
+    const { data: pokemons, fetchNextPage, isFetching, isError: isErrorPokemons, error: errorPokemons } = useFetchPokemons()
     const { data: pokemon, isLoading: isLoadingPokemon, isError: isErrorPokemon, error: errorPokemon } = useFetchDetailPokemon(25, true)
 
 
@@ -54,7 +54,7 @@ function Home(props) {
                         {
                             pokemons?.pages?.map((item) => {
                                 return item.pokemons.map((val) => {
-                                    return <Skeleton isLoaded={!isLoadingPokemons} rounded='xl' key={val.id}>
+                                    return <Skeleton isLoaded={!isLoadingPokemon} rounded='xl' key={val.id}>
                                         <Box>
                                             <CardSquare allFavourite={props.allFavourite} getPokemons={props.getPokemons} id={val.id} name={val.name} image={val.sprites?.other.home.front_default} types={val.types} />
                                         </Box>
