@@ -1,14 +1,18 @@
-import { Box, Card, Heading, Image, ButtonGroup, Text, Button } from '@chakra-ui/react'
-import React from 'react'
-import { AiOutlineHeart } from 'react-icons/ai';
-import { AiFillHeart } from 'react-icons/ai';
-import { useNavigate } from 'react-router-dom';
-import noImage from '../../Assets/noImage.png'
+import { Box, Button, ButtonGroup, Card, Heading, Image, Tag, TagLabel } from '@chakra-ui/react';
+import React from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import noImage from '../../Assets/noImage.png';
+import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
+import { checkIsLiked } from '../../helper/checkIsLiked';
+import { useUpdateFavourite } from '../../hooks/useUpdateFavourite';
+import Toast from '../Toast/Toast';
 
 
 
 function CardRectangleWithLine(props) {
-    const navigate = useNavigate();
+    const { handleLike, isLoadingUnlike, isLoadingLike, isError, error } = useUpdateFavourite(props.getPokemons)
+
+    const exist = checkIsLiked(props?.allFavourite, props?.id)
 
     return (
         <Card
@@ -21,7 +25,7 @@ function CardRectangleWithLine(props) {
             rounded={'xl'}
             h='180px'
         >
-            <Box mx='4px'>
+            <Box mx='4px' w='30%'>
                 <Image
                     objectFit='cover'
                     w='120px'
@@ -33,24 +37,29 @@ function CardRectangleWithLine(props) {
                 />
             </Box>
 
-            <Box color={'white'} alignContent='center'>
-                <Heading size={{ base: 'xs' }} mb='2'>{props.name}</Heading>
-                <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
-                    Pikachu pikachu pikachu pikachu pikachu pikachu
-                </Text>
-                <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
-                    Pikachu pikachu pikachu pikachu pikachu pikachu
-                </Text>
-                <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
-                    Pikachu pikachu pikachu pikachu pikachu pikachu
-                </Text>
+            <Box color={'white'} alignContent='center' w='75%'>
+                <Heading size={{ base: 'xs' }} mb='2'>{capitalizeFirstWord(props.name)}</Heading>
+                {
+                    <Box>
+                        {
+                            props?.types?.map((val, idx) => {
+                                return <Tag size='md' borderRadius='full' variant={'solid'} key={idx} mr='2'>
+                                    <TagLabel fontSize='xs'>{capitalizeFirstWord(val.type.name)}</TagLabel>
+                                </Tag>
+                            })
+                        }
+                    </Box>
+                }
                 <Box textAlign={'end'} mt='2'>
                     <ButtonGroup size={'xs'} textAlign='center' spacing='0'>
-                        <Button bgColor={'transparent'} _hover={{}} >
-                            <AiOutlineHeart style={{ color: 'white', fontSize: '20px' }} />
+                        <Button _hover={{ transform: 'scale(1.3)' }} _active='none' isLoading={isLoadingLike || isLoadingUnlike ? true : false} color='white' bgColor='transparent' onClick={() => handleLike(props.id)}>
+                            {exist ? <AiFillHeart style={{ color: 'red', fontSize: '20px' }} /> : <AiOutlineHeart style={{ color: 'white', fontSize: '20px' }} />}
                         </Button>
                     </ButtonGroup>
                 </Box>
+
+                {isError && <Toast name='Error' description={error.message} status='error' />}
+
             </Box>
         </Card >
     )

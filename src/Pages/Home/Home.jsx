@@ -1,17 +1,19 @@
-import { Box, Heading, SimpleGrid, Skeleton, Spinner } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
+import { Box, Heading, SimpleGrid, Skeleton } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import CardRectangle from '../../Components/Cards/CardRectangle'
 import CardSquare from '../../Components/Cards/CardSquare'
 import Loading from '../../Components/Loading/Loading'
-import { useFetchPokemons } from '../../hooks/useFetchPokemons'
-import { useFetchDetailPokemon } from '../../hooks/useFetchDetailPokemon'
 import Toast from '../../Components/Toast/Toast'
+import { useFetchDetailPokemon } from '../../hooks/useFetchDetailPokemon'
+import { useFetchPokemons } from '../../hooks/useFetchPokemons'
 
 
 
-function Home() {
+
+function Home(props) {
     const { data: pokemons, fetchNextPage, isFetching, isLoading: isLoadingPokemons, isError: isErrorPokemons, error: errorPokemons } = useFetchPokemons()
     const { data: pokemon, isLoading: isLoadingPokemon, isError: isErrorPokemon, error: errorPokemon } = useFetchDetailPokemon(25, true)
+
 
     useEffect(() => {
         const onScroll = async (event) => {
@@ -37,7 +39,7 @@ function Home() {
                 </Box>
                 <Box mb='4'>
                     <Skeleton isLoaded={!isLoadingPokemon} rounded='xl'>
-                        <CardRectangle pokemon={pokemon} />
+                        <CardRectangle pokemon={pokemon} allFavourite={props.allFavourite} getPokemons={props.getPokemons} />
                     </Skeleton>
                 </Box>
 
@@ -47,14 +49,14 @@ function Home() {
                         Pokemons
                     </Heading>
                 </Box>
-                <Box>
+                <Box minHeight={'100vh'}>
                     <SimpleGrid columns={2} spacing={5}>
                         {
                             pokemons?.pages?.map((item) => {
                                 return item.pokemons.map((val) => {
                                     return <Skeleton isLoaded={!isLoadingPokemons} rounded='xl' key={val.id}>
                                         <Box>
-                                            <CardSquare id={val.id} name={val.name} image={val.sprites?.other.home.front_default} />
+                                            <CardSquare allFavourite={props.allFavourite} getPokemons={props.getPokemons} id={val.id} name={val.name} image={val.sprites?.other.home.front_default} types={val.types} />
                                         </Box>
                                     </Skeleton>
                                 })

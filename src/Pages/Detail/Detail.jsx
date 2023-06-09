@@ -5,16 +5,17 @@ import Progress from '../../Components/Progress/ProgressBar'
 import { useFetchDetailPokemon } from '../../hooks/useFetchDetailPokemon'
 import { useParams, useNavigate } from 'react-router-dom'
 import Toast from '../../Components/Toast/Toast'
+import { Fragment } from 'react'
 
 
 
 
-function Detail() {
+function Detail(props) {
     const params = useParams()
     const navigate = useNavigate()
 
     const { data, isLoading, isError, error } = useFetchDetailPokemon(params.id)
-    // console.log(data.stats)
+
 
 
     return (
@@ -33,7 +34,7 @@ function Detail() {
                 {/* CARD */}
                 <Box mb='4'>
                     <Skeleton isLoaded={!isLoading} rounded='xl'>
-                        <CardRectangleWithLine name={data?.name} image={data?.sprites?.other.home.front_default} />
+                        <CardRectangleWithLine getPokemons={props.getPokemons} allFavourite={props.allFavourite} types={data?.types} id={data?.id} name={data?.name} image={data?.sprites?.other.home.front_default} />
                     </Skeleton>
                 </Box>
 
@@ -47,16 +48,16 @@ function Detail() {
                 </Box>
                 <SimpleGrid columns={2} spacing={1} alignItems='center' mt='2'>
 
-                    {data?.stats?.map((val) => {
+                    {data?.stats?.map((val, idx) => {
                         return (
-                            <>
-                                <Skeleton isLoaded={!isLoading}>
+                            <Fragment key={idx}>
+                                <Skeleton isLoaded={!isLoading} >
                                     <Box>{val.stat.name}: </Box>
                                 </Skeleton>
                                 <Skeleton isLoaded={!isLoading}>
                                     <Box><Progress value={val.base_stat} /></Box>
                                 </Skeleton>
-                            </>
+                            </Fragment>
                         )
                     })}
 

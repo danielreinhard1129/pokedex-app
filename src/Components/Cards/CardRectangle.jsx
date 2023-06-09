@@ -1,14 +1,22 @@
-import { Box, Card, Heading, Image, ButtonGroup, Text, Button } from '@chakra-ui/react'
+import { Box, Card, Heading, Image, ButtonGroup, Text, Button, Tag, TagLabel } from '@chakra-ui/react'
 import React from 'react'
 import { AiOutlineHeart } from 'react-icons/ai';
 import { AiFillHeart } from 'react-icons/ai';
 import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
 import { useNavigate } from 'react-router-dom';
 import noImage from '../../Assets/noImage.png'
+import { useUpdateFavourite } from '../../hooks/useUpdateFavourite';
+import { checkIsLiked } from '../../helper/checkIsLiked';
+import Toast from '../Toast/Toast';
 
 
 function CardRectangle(props) {
     const navigate = useNavigate();
+
+    const { handleLike, isLoadingUnlike, isLoadingLike, isError, error } = useUpdateFavourite(props.getPokemons)
+
+    const exist = checkIsLiked(props?.allFavourite, props?.pokemon?.id)
+
 
     return (
         <Card
@@ -20,38 +28,42 @@ function CardRectangle(props) {
             p='5'
             rounded={'xl'}
         >
-            <Box mx='4px'>
+            <Box mx='4px' w='30%'>
                 <Image
                     objectFit='cover'
-                    w='100px'
+                    w='full'
                     h='100px'
                     src={props.pokemon?.sprites?.other?.home?.front_default ? props.pokemon?.sprites?.other?.home?.front_default : noImage}
                     alt='Pokemon'
                 />
             </Box>
 
-            <Box color={'white'}>
-                <Heading size={{ base: 'xs' }} mb='2'>{props.pokemon?.name}</Heading>
-                <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
-                    Pikachu pikachu pikachu pikachu pikachu
-                </Text>
-                <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
-                    Pikachu pikachu pikachu pikachu pikachu
-                </Text>
-                <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
-                    Pikachu pikachu pikachu pikachu pikachu
-                </Text>
-                <Box textAlign={'end'} mt='2'>
+            <Box color={'white'} w='70%' ml='2'>
+                <Heading size={{ base: 'md' }} mb='2'>{capitalizeFirstWord(props.pokemon?.name)}</Heading>
+                <Box>
+                    {
+                        props?.pokemon?.types?.map((val, idx) => {
+                            return <Tag size='md' borderRadius='full' variant={'solid'} key={idx} mr='2'>
+                                <TagLabel fontSize='xs'>{capitalizeFirstWord(val.type.name)}</TagLabel>
+                            </Tag>
+                        })
+                    }
+                </Box>
+
+                <Box textAlign={'end'} mt='2' w='full'>
                     <ButtonGroup size={'xs'} textAlign='center' spacing='0'>
-                        <Button bgColor={'transparent'} _hover={{}} >
-                            <AiOutlineHeart style={{ color: 'white', fontSize: '15px' }} />
+                        <Button _hover={{ transform: 'scale(1.2)' }} _active='none' isLoading={isLoadingLike || isLoadingUnlike ? true : false} color='white' bgColor='transparent' onClick={() => handleLike(props.pokemon.id)}>
+                            {exist ? <AiFillHeart style={{ color: 'red', fontSize: '15px' }} /> : <AiOutlineHeart style={{ color: 'white', fontSize: '15px' }} />}
                         </Button>
-                        <Button bgColor='#FF7A2E' textColor={'white'} rounded='lg' fontSize={'xs'}
+                        <Button _hover={{ transform: 'scale(1.1)' }} _active='none' bgColor='#FF7A2E' textColor={'white'} rounded='lg' fontSize={'xs'}
                             onClick={() => navigate(`/detail/${props.pokemon.id}`)}>
                             ver mais
                         </Button>
                     </ButtonGroup>
                 </Box>
+
+                {isError && <Toast name='Error' description={error.message} status='error' />}
+
             </Box>
         </Card >
     )

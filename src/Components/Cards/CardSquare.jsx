@@ -1,16 +1,19 @@
-import React from 'react'
-import { Card, Stack, Image, Heading, ButtonGroup, Button } from '@chakra-ui/react'
-import imagePokemon from '../../Assets/1.png'
-import { AiOutlineHeart } from 'react-icons/ai';
-import { AiFillHeart } from 'react-icons/ai';
-import { AiFillInfoCircle } from 'react-icons/ai';
-import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
+import { Button, ButtonGroup, Card, Heading, Image, Stack } from '@chakra-ui/react';
+import React from 'react';
+import { AiFillHeart, AiFillInfoCircle, AiOutlineHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
-
+import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
+import { checkIsLiked } from '../../helper/checkIsLiked';
+import { useUpdateFavourite } from '../../hooks/useUpdateFavourite';
+import Toast from '../Toast/Toast';
 
 
 function CardSquare(props) {
     const navigate = useNavigate();
+
+    const { handleLike, isLoadingUnlike, isLoadingLike, isError, error } = useUpdateFavourite(props.getPokemons)
+
+    const exist = checkIsLiked(props?.allFavourite, props.id)
 
     return (
         <Card
@@ -27,16 +30,17 @@ function CardSquare(props) {
                     alt='Caffe Latte'
                 />
                 capita
-                <Heading size='sm' mb='2' color={'white'}>{props.name}</Heading>
+                <Heading size='sm' mb='2' color={'white'}>{capitalizeFirstWord(props.name)}</Heading>
                 <ButtonGroup size='xs' bgColor={'#263C66'} rounded='full' px='4' alignItems={'center'}>
-                    <Button _hover={{}} bgColor='transparent'>
-                        <AiOutlineHeart style={{ color: 'white', fontSize: '15px' }} />
+                    <Button _hover={{ transform: 'scale(1.3)' }} _active='none' isLoading={isLoadingLike || isLoadingUnlike ? true : false} color='white' bgColor='transparent' onClick={() => handleLike(props.id)}>
+                        {exist ? <AiFillHeart style={{ color: 'red', fontSize: '15px' }} /> : <AiOutlineHeart style={{ color: 'white', fontSize: '15px' }} />}
                     </Button>
-                    <Button _hover={{}} bgColor='transparent' onClick={() => navigate(`/detail/${props.id}`)}>
+                    <Button _hover={{ transform: 'scale(1.2)' }} _active='none' bgColor='transparent' onClick={() => navigate(`/detail/${props.id}`)}>
                         <AiFillInfoCircle style={{ color: 'white', fontSize: '15px' }} />
                     </Button>
                 </ButtonGroup>
             </Stack>
+            {isError && <Toast name='Error' description={error.message} status='error' />}
         </Card>
     )
 }
