@@ -1,13 +1,29 @@
-import React from 'react'
-import { Box, Button, Heading, Flex, Skeleton, Text, SimpleGrid } from '@chakra-ui/react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { Box, Divider, Heading, Skeleton, Text } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import CardFavoritos from '../../Components/Cards/CardFavoritos'
+import Toast from '../../Components/Toast/Toast'
+import { useFetchFavourite } from '../../hooks/useFetchFavourite'
 
 
 
-function Favourite() {
-    const params = useParams()
-    const navigate = useNavigate()
+
+function Favourite(props) {
+    const [isLoading, setIsloading] = useState(true);
+    setTimeout(() => {
+        setIsloading(false)
+    }, 1200)
+
+    const listFavouritePokemon = useSelector((state) => state.favourite.data)
+    const { data, refetch, isError, error } = useFetchFavourite(listFavouritePokemon)
+
+
+    useEffect(() => {
+        if (listFavouritePokemon) {
+            refetch()
+        }
+    }, [listFavouritePokemon])
+
 
 
     return (
@@ -18,21 +34,21 @@ function Favourite() {
                         Favoritos
                     </Heading>
                 </Box>
-
-                {/* CARD */}
-                {/* <Box mb='4'>
-                    <Skeleton isLoaded={!isLoading} rounded='xl'>
-                        <CardRectangleWithLine name={data?.name} image={data?.sprites?.other.home.front_default} />
-                    </Skeleton>
-                </Box> */}
-
                 <Box mb='4'>
-                    <Skeleton isLoaded={true}>
-                        <CardFavoritos id image name />
-                    </Skeleton>
+                    {
+                        isLoading ?
+                            <Skeleton h='180px' rounded='xl'></Skeleton>
+                            :
+                            data?.map((val) => {
+                                return <CardFavoritos getPokemons={props.getPokemons} allFavourite={props.allFavourite} id={val?.id} name={val?.name} types={val?.types} image={val?.sprites?.other.home.front_default} key={val?.id} />
+                            })
+                    }
                 </Box>
-                <Text textAlign='center' fontSize='sm' fontWeight='semibold'>Vocé tem 1 pokemon favorito</Text>
-
+                <Skeleton isLoaded={!isLoading}>
+                    <Text textAlign='center' fontSize='sm' fontWeight='semibold'>Vocé tem {data?.length} pokemon favorito</Text>
+                </Skeleton>
+                <Divider pb='32' />
+                {isError && <Toast name='Error' description={error.message} status='error' />}
             </Box>
         </Box>
     )
