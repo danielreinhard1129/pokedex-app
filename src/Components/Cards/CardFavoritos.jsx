@@ -1,6 +1,7 @@
 import { Box, Button, ButtonGroup, Card, Heading, Image, Tag, TagLabel } from '@chakra-ui/react';
 import React from 'react';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
 import noImage from '../../Assets/noImage.png';
 import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord';
 import { checkIsLiked } from '../../helper/checkIsLiked';
@@ -9,7 +10,9 @@ import Toast from '../Toast/Toast';
 
 
 
-function CardRectangleWithLine(props) {
+function CardFavoritos(props) {
+    const navigate = useNavigate();
+
     const { handleLike, isLoadingUnlike, isLoadingLike, isError, error } = useUpdateFavourite(props.getPokemons)
 
     const exist = checkIsLiked(props?.allFavourite, props?.id)
@@ -24,6 +27,7 @@ function CardRectangleWithLine(props) {
             p='5'
             rounded={'xl'}
             h='180px'
+            mb='2'
         >
             <Box mx='4px' w='30%'>
                 <Image
@@ -37,7 +41,7 @@ function CardRectangleWithLine(props) {
                 />
             </Box>
 
-            <Box color={'white'} alignContent='center' w='75%'>
+            <Box color={'white'} alignContent='center' w='70%' ml='2'>
                 <Heading size={{ base: 'xs' }} mb='2'>{capitalizeFirstWord(props.name)}</Heading>
                 {
                     <Box>
@@ -53,7 +57,11 @@ function CardRectangleWithLine(props) {
                 <Box textAlign={'end'} mt='2'>
                     <ButtonGroup size={'xs'} textAlign='center' spacing='0'>
                         <Button _hover={{ transform: 'scale(1.3)' }} _active='none' isLoading={isLoadingLike || isLoadingUnlike ? true : false} color='white' bgColor='transparent' onClick={() => handleLike(props.id)}>
-                            {exist ? <AiFillHeart style={{ color: 'red', fontSize: '20px' }} /> : <AiOutlineHeart style={{ color: 'white', fontSize: '20px' }} />}
+                            {exist ? <AiFillHeart style={{ color: 'red', fontSize: '15px' }} /> : <AiOutlineHeart style={{ color: 'white', fontSize: '15px' }} />}
+                        </Button>
+                        <Button _hover={{ transform: 'scale(1.1)' }} _active='none' bgColor='#FF7A2E' textColor={'white'} rounded='lg' fontSize={'xs'}
+                            onClick={() => navigate(`/detail/${props.id}`)}>
+                            Detalhes
                         </Button>
                     </ButtonGroup>
                 </Box>
@@ -65,4 +73,4 @@ function CardRectangleWithLine(props) {
     )
 }
 
-export default CardRectangleWithLine
+export default CardFavoritos

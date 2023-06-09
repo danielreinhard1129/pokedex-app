@@ -1,7 +1,7 @@
-import React from 'react'
-import { Flex, Image, Stack, Button } from '@chakra-ui/react'
+import { Button, Flex, Image, Stack } from '@chakra-ui/react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import notFound from '../../Assets/notFound.png'
+import notFound from '../../Assets/notFound.png';
 
 
 function NotFound() {

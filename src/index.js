@@ -6,6 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { Provider } from 'react-redux';
+import globalStore from './reducers';
+
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,13 +21,15 @@ const queryClient = new QueryClient({
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
+  <Provider store={globalStore}>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
