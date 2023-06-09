@@ -28,6 +28,9 @@ function CardSquare(props) {
                     h='120px'
                     src={props.image}
                     alt='Caffe Latte'
+                    onClick={() => navigate(`/detail/${props.id}`)}
+                    cursor='pointer'
+                    _hover={{ transform: 'scale(1.1)' }}
                 />
                 capita
                 <Heading size='sm' mb='2' color={'white'}>{capitalizeFirstWord(props.name)}</Heading>
