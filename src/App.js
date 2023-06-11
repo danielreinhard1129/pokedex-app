@@ -3,6 +3,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { Route, Routes } from 'react-router-dom';
+import LoadingInitial from './Components/Loading/LoadingInitial';
 import Navbar from './Components/Navbar/Navbar';
 import db from './config/firebase';
 import Detail from './Pages/Detail/Detail';
@@ -16,6 +17,7 @@ import { updateAction } from './reducers/favourite';
 
 function App() {
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true)
 
   const [allFavourite, setAllFavourite] = useState([])
   const getPokemons = async () => {
@@ -28,17 +30,28 @@ function App() {
 
   useEffect(() => {
     getPokemons()
+
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2500)
   }, []);
 
   return (
     <Container px='0' maxW='md' m='auto'>
-      <Routes>
-        <Route path='/' element={<Home getPokemons={getPokemons} allFavourite={allFavourite} />} />
-        <Route path='/favourite' element={<Favourite getPokemons={getPokemons} allFavourite={allFavourite} />} />
-        <Route path='/detail/:id' element={<Detail getPokemons={getPokemons} allFavourite={allFavourite} />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-      <Navbar />
+      {
+        isLoading ?
+          <LoadingInitial />
+          :
+          <>
+            <Routes>
+              <Route path='/' element={<Home getPokemons={getPokemons} allFavourite={allFavourite} />} />
+              <Route path='/favourite' element={<Favourite getPokemons={getPokemons} allFavourite={allFavourite} />} />
+              <Route path='/detail/:id' element={<Detail getPokemons={getPokemons} allFavourite={allFavourite} />} />
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+            <Navbar />
+          </>
+      }
     </Container>
   );
 }
