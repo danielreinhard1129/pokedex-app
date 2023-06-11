@@ -6,6 +6,7 @@ import { useFetchDetailPokemon } from '../../hooks/useFetchDetailPokemon'
 import { useParams, useNavigate } from 'react-router-dom'
 import Toast from '../../Components/Toast/Toast'
 import { Fragment, useEffect } from 'react'
+import { capitalizeFirstWord } from '../../helper/capitalizeFirstWord'
 
 
 
@@ -29,7 +30,7 @@ function Detail(props) {
                         <FaLessThan style={{ fontSize: '25px', margin: 'auto', }} />
                     </Button>
                     <Heading size='lg' fontWeight={'semibold'}>
-                        {data?.name}
+                        {capitalizeFirstWord(data?.name)}
                     </Heading>
                 </Flex>
 
