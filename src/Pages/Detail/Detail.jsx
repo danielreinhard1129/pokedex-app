@@ -5,7 +5,7 @@ import Progress from '../../Components/Progress/ProgressBar'
 import { useFetchDetailPokemon } from '../../hooks/useFetchDetailPokemon'
 import { useParams, useNavigate } from 'react-router-dom'
 import Toast from '../../Components/Toast/Toast'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 
 
 
@@ -16,7 +16,9 @@ function Detail(props) {
 
     const { data, isLoading, isError, error } = useFetchDetailPokemon(params.id)
 
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     return (
         <Box bgColor={'#F2F2F2'} minH={'100vh'} px='4'>

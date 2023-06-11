@@ -24,6 +24,10 @@ function Favourite(props) {
         }
     }, [listFavouritePokemon])
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
 
 
     return (

@@ -31,17 +31,32 @@ function Navbar() {
         isVisible = false
     }
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
+
     return (
         <Flex pos={'relative'} w='full' justifyContent={'center'} display={isValid ? 'flex' : 'none'}>
             <Flex border={'1px solid gray'} bgColor={'#0E1F40'} shadow='2xl' position='fixed' bottom={'5'} justifyContent='space-evenly' w={{ base: '75%', sm: '350px', md: '350px' }} py='2' rounded={'xl'}>
-                <Button _hover={{ transform: 'scale(1.2)' }} _active='none' bgColor={'#0E1F40'} py='7' onClick={() => navigate('/')}>
+                <Button _hover={{ transform: 'scale(1.2)' }} _active='none' bgColor={'#0E1F40'} py='7'
+                    onClick={() => {
+                        navigate('/')
+                        scrollToTop()
+                    }}>
                     <Flex flexDir={'column'} alignItems='center'>
                         <TbPokeball style={{ fontSize: '30px', color: location.pathname === '/' ? 'white' : 'gray' }} />
                         <Text fontSize={'xs'} color={location.pathname === '/' ? 'white' : 'gray'}>Home</Text>
                     </Flex>
                 </Button>
                 <Box pos='relative'>
-                    <Button _hover={{ transform: 'scale(1.2)' }} _active='none' bgColor={'#0E1F40'} py='7' onClick={() => navigate('/favourite')}>
+                    <Button _hover={{ transform: 'scale(1.2)' }} _active='none' bgColor={'#0E1F40'} py='7'
+                        onClick={() => {
+                            navigate('/favourite')
+                            scrollToTop()
+                        }}>
                         <Flex flexDir={'column'} alignItems='center'>
                             <Badge pos={'absolute'} right='6' top='-0.5' bgColor={'red'} color='white' rounded={'full'}>{listFavouritePokemon.length}</Badge>
                             <FaBookmark style={{ fontSize: '30px', color: location.pathname === '/favourite' ? 'white' : 'gray' }} />
